@@ -40,4 +40,14 @@ struct OMDBApi {
     static var searchByTitleUrl: URL {
         return omdbUrl(parameters: ["t":"tenet"])
     }
+    
+    static func movie(fromJSON data: Data) -> Result<Movie, Error> {
+        do {
+            let decoder = JSONDecoder()
+            let response = try decoder.decode(Movie.self, from: data)
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
 }

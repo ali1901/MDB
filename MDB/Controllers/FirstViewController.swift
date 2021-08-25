@@ -15,7 +15,15 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        store.fetchMovie()
+//        store.fetchMovie()
+        store.fetchMovie { (movieResult) in
+            switch movieResult {
+            case let .success(movie):
+                print("Successfully found \(movie.title) for search query /tenet/.")
+            case let .failure(error):
+                print("Error fetching movie: \(error)")
+            }
+        }
     }
 
 
