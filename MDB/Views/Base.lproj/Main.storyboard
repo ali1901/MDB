@@ -12,7 +12,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="FirstViewController" customModule="MDB" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="FirstView" customModule="MDB" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -28,6 +28,7 @@
                                         <rect key="frame" x="350" y="2" width="48" height="30"/>
                                         <state key="normal" title="Search"/>
                                         <connections>
+                                            <action selector="searchTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SA2-Ll-V1J"/>
                                             <segue destination="JTD-mq-NUf" kind="show" id="agT-Wh-lGn"/>
                                         </connections>
                                     </button>
@@ -43,6 +44,10 @@
                             <constraint firstItem="EcW-HH-hiy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="ycM-va-hNJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <connections>
+                            <outlet property="saerchBtn" destination="2hK-JP-275" id="bje-fc-u3J"/>
+                            <outlet property="searchTxtField" destination="fhR-bJ-mzf" id="uex-Tn-CLc"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="uGr-NZ-G9i"/>
                 </viewController>

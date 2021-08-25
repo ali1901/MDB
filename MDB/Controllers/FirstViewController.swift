@@ -12,20 +12,39 @@ class FirstViewController: UIViewController {
 
     var store: MovieStore!
     
+    public var firstView: FirstView! {
+        guard isViewLoaded else {
+            return nil
+        }
+        return (view as! FirstView)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-//        store.fetchMovie()
-        store.fetchMovie { (movieResult) in
+        
+    }
+    
+    // _MARK: Custom funcs
+    private func fetch(with query: String) {
+        store.fetchMovie(for: query) { (movieResult) in
             switch movieResult {
             case let .success(movie):
-                print("Successfully found \(movie.title) for search query /tenet/.")
+                print("Successfully found \(movie.title) for search query /\(query)/.")
             case let .failure(error):
                 print("Error fetching movie: \(error)")
             }
         }
     }
-
+    
+    // _MARK: IBActions
+    @IBAction func searchTapped(_ sender: UIButton) {
+        if let query = firstView.searchTxtField.text{
+            fetch(with: query)
+        }
+        fetch(with: "it")
+    }
+    
 
 }
 

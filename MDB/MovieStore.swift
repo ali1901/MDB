@@ -15,19 +15,12 @@ class MovieStore {
         return URLSession(configuration: config)
     }()
     
-    public func fetchMovie(completion: @escaping (Result<Movie, Error>) -> Void) {
+    public func fetchMovie(for title: String, with completion: @escaping (Result<Movie, Error>) -> Void) {
+        OMDBApi.tittleToSearchFor(title: title)
         let url = OMDBApi.searchByTitleUrl
         let request = URLRequest(url: url)
         let task = session.dataTask(with: request) { (data, response, error) in
-//            if let jsonData = data {
-//                if let jsonString = String(data: jsonData, encoding: .utf8) {
-//                    print(jsonString)
-//                } else if let requestError = error {
-//                    print("Error fetching data: \(requestError)")
-//                } else {
-//                    print("Unexpected Error!")
-//                }
-//            }
+
             let result = self.processMovieRequest(data: data, error: error)
             completion(result)
         }

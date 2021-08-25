@@ -15,6 +15,11 @@ import Foundation
 struct OMDBApi {
     private static let basesUrlString = "https://www.omdbapi.com/?"
     private static let apiKey = "77fab3b"
+    private static var movieTitle = "ipman"
+    
+    public static func tittleToSearchFor(title: String) {
+        movieTitle = title
+    }
     
     private static func omdbUrl(parameters: [String:String]?) -> URL {
         var components = URLComponents(string: basesUrlString)!
@@ -38,7 +43,7 @@ struct OMDBApi {
     }
     
     static var searchByTitleUrl: URL {
-        return omdbUrl(parameters: ["t":"tenet"])
+        return omdbUrl(parameters: ["t": movieTitle])
     }
     
     static func movie(fromJSON data: Data) -> Result<Movie, Error> {
