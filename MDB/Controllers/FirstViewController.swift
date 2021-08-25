@@ -10,9 +10,12 @@ import UIKit
 
 class FirstViewController: UIViewController {
 
+    var store: MovieStore!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        store.fetchMovie()
     }
 
 
