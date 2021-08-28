@@ -6,7 +6,7 @@
 //  Copyright © 2021 Ali Safari. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class MovieStore {
     
@@ -26,12 +26,43 @@ class MovieStore {
         }
         task.resume()
     }
+    public func fetchImage(for movie: Movie, with compelition: @escaping (Result<UIImage, Error>) -> Void) {
+        guard let imageUrl = movie.posterUrl else {
+            compelition(.failure(MoviePosterError.missingImageUrl))
+            return
+        }
+        let request = URLRequest(url: imageUrl)
+        let task = session.dataTask(with: request) { (data, response, error) in
+            let result = self.processImageRequest(data: data, error: error)
+            compelition(result)
+        }
+        task.resume()
+    }
     
     private func processMovieRequest(data: Data?, error: Error?) -> Result<Movie, Error> {
         guard let jsonData = data else {
             return .failure(error!)
         }
         
-        return OMDBApi.movie(fromJSON: jsonData)
+        return OMDBApi.fetchedMovie(fromJSON: jsonData)
+    }
+    
+    private func processImageRequest(data: Data?, error: Error?) -> Result<UIImage, Error> {
+        guard
+            let imageData = data,
+            let image = UIImage(data: imageData) else {
+            if data == nil {
+                return .failure(error!)
+            } else {
+                return .failure(MoviePosterError.imageCreation)
+            }
+        }
+        return .success(image)
+        
+    }
+    
+    enum MoviePosterError: Error {
+        case imageCreation
+        case missingImageUrl
     }
 }

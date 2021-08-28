@@ -14,7 +14,16 @@ class Movie: Codable {
     let rate: String
     let plot: String
     let imdbRating: String
-    let posterUrl: URL
+    let posterUrl: URL?
+    
+    init (title: String, year: String, rate: String, plot: String, imdb: String){
+        self.title = title
+        self.year = year
+        self.rate = rate
+        self.plot = plot
+        self.imdbRating = imdb
+        self.posterUrl = nil
+    }
     
     enum CodingKeys: String, CodingKey {
         case title = "Title"

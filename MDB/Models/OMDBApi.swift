@@ -46,7 +46,7 @@ struct OMDBApi {
         return omdbUrl(parameters: ["t": movieTitle])
     }
     
-    static func movie(fromJSON data: Data) -> Result<Movie, Error> {
+    static func fetchedMovie(fromJSON data: Data) -> Result<Movie, Error> {
         do {
             let decoder = JSONDecoder()
             let response = try decoder.decode(Movie.self, from: data)

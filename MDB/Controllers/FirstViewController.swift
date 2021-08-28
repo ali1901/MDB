@@ -11,6 +11,8 @@ import UIKit
 class FirstViewController: UIViewController {
 
     var store: MovieStore!
+    var movie = Movie(title: "", year: "", rate: "", plot: "", imdb: "")
+    var searhQuery = ""
     
     public var firstView: FirstView! {
         guard isViewLoaded else {
@@ -25,11 +27,19 @@ class FirstViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let detailVC = segue.destination as? MovieDetailViewController {
+            detailVC.store = self.store
+            detailVC.fetch(with: searhQuery)
+        }
+    }
+    
     // _MARK: Custom funcs
     private func fetch(with query: String) {
         store.fetchMovie(for: query) { (movieResult) in
             switch movieResult {
             case let .success(movie):
+                self.movie = movie
                 print("Successfully found \(movie.title) for search query /\(query)/.")
             case let .failure(error):
                 print("Error fetching movie: \(error)")
@@ -40,9 +50,12 @@ class FirstViewController: UIViewController {
     // _MARK: IBActions
     @IBAction func searchTapped(_ sender: UIButton) {
         if let query = firstView.searchTxtField.text{
-            fetch(with: query)
+            //fetch(with: query)
+            self.searhQuery = query
+        } else {
+            //fetch(with: "it")
+            self.searhQuery = "it"
         }
-        fetch(with: "it")
     }
     
 
