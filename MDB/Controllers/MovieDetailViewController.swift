@@ -11,6 +11,7 @@ import UIKit
 class MovieDetailViewController: UIViewController {
     
     var store: MovieStore!
+    var searchQuery = ""
     
     public var moveiDetaiLView: MovieDetailView! {
         guard isViewLoaded else {
@@ -19,13 +20,15 @@ class MovieDetailViewController: UIViewController {
         return (view as! MovieDetailView)
     }
     
-    var movie = Movie(title: "", year: "", rate: "", plot: "", imdb: "")
+//    var movie = Movie(title: "", year: "", rate: "", plot: "", imdb: "")
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        print("did load the detail,:  \(movie.title)")
+        print(searchQuery + "------------")
+        fetch(with: searchQuery)
+        
     }
     
     // _MARK: Custom funcs
@@ -34,8 +37,9 @@ class MovieDetailViewController: UIViewController {
             switch movieResult {
             case let .success(movie):
                 DispatchQueue.main.async {
-                    self.movie = movie
-                    self.setUpView()
+                    //self.movie = movie
+                    self.setUpView(movie: movie)
+                    print("did load the detail,:  \(movie.title)")
                 }
                 
                 print("Successfully found \(movie.title) for search query /\(query)/.")
@@ -45,7 +49,7 @@ class MovieDetailViewController: UIViewController {
         }
     }
     
-    private func setUpView() {
+    private func setUpView(movie: Movie) {
         moveiDetaiLView.titleL.text = movie.title
         moveiDetaiLView.plotL.text = movie.plot
         moveiDetaiLView.ageL.text = movie.rate

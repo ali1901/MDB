@@ -27,25 +27,34 @@ class FirstViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        firstView.searchTxtField.text = ""
+        searhQuery = ""
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailVC = segue.destination as? MovieDetailViewController {
             detailVC.store = self.store
-            detailVC.fetch(with: searhQuery)
+            if let text = firstView.searchTxtField.text {
+                detailVC.searchQuery = text
+            } else {
+                detailVC.searchQuery = "it"
+            }
         }
     }
     
     // _MARK: Custom funcs
-    private func fetch(with query: String) {
-        store.fetchMovie(for: query) { (movieResult) in
-            switch movieResult {
-            case let .success(movie):
-                self.movie = movie
-                print("Successfully found \(movie.title) for search query /\(query)/.")
-            case let .failure(error):
-                print("Error fetching movie: \(error)")
-            }
-        }
-    }
+//    private func fetch(with query: String) {
+//        store.fetchMovie(for: query) { (movieResult) in
+//            switch movieResult {
+//            case let .success(movie):
+//                self.movie = movie
+//                print("Successfully found \(movie.title) for search query /\(query)/.")
+//            case let .failure(error):
+//                print("Error fetching movie: \(error)")
+//            }
+//        }
+//    }
     
     // _MARK: IBActions
     @IBAction func searchTapped(_ sender: UIButton) {
@@ -60,4 +69,3 @@ class FirstViewController: UIViewController {
     
 
 }
-
