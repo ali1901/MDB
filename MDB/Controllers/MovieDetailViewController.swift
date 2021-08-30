@@ -20,8 +20,6 @@ class MovieDetailViewController: UIViewController {
         return (view as! MovieDetailView)
     }
     
-//    var movie = Movie(title: "", year: "", rate: "", plot: "", imdb: "")
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,6 +27,10 @@ class MovieDetailViewController: UIViewController {
         print(searchQuery + "------------")
         fetch(with: searchQuery)
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+//        print("im gone brooooooooo")
     }
     
     // _MARK: Custom funcs
@@ -39,7 +41,7 @@ class MovieDetailViewController: UIViewController {
                 DispatchQueue.main.async {
                     //self.movie = movie
                     self.setUpView(movie: movie)
-                    print("did load the detail,:  \(movie.title)")
+                    self.store.saveTheData(movie: movie)
                 }
                 
                 print("Successfully found \(movie.title) for search query /\(query)/.")

@@ -11,8 +11,8 @@ import UIKit
 class FirstViewController: UIViewController {
 
     var store: MovieStore!
-    var movie = Movie(title: "", year: "", rate: "", plot: "", imdb: "")
     var searhQuery = ""
+    let userDefaults = UserDefaults.standard
     
     public var firstView: FirstView! {
         guard isViewLoaded else {
@@ -24,6 +24,20 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let dir = store.documentDirectories
+        var docDir = dir.first!
+        if let movieTitles = userDefaults.value(forKey: "MovieTitles") {
+            let titles = movieTitles as! [String]
+            for item in titles {
+                print("these are availible: \(item)")
+                docDir.appendPathComponent("\(item).plist")
+                loadMovies(url: docDir)
+                docDir = docDir.deletingLastPathComponent()
+                print ("this the address: \(docDir)")
+//                print("these are availible: \(movie?.year)")
+            }
+        }
+        
         
     }
     
@@ -55,6 +69,19 @@ class FirstViewController: UIViewController {
 //            }
 //        }
 //    }
+    
+    private func loadMovies(url: URL) {
+        do {
+            let data = try Data(contentsOf: url)
+            let unarchiver = PropertyListDecoder()
+            let movie = try unarchiver.decode(Movie.self, from: data)
+            print("i got this: \(movie.title)")
+        } catch {
+            print(error)
+        }
+        
+//        return movie
+    }
     
     // _MARK: IBActions
     @IBAction func searchTapped(_ sender: UIButton) {

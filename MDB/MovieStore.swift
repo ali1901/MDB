@@ -15,6 +15,12 @@ class MovieStore {
         return URLSession(configuration: config)
     }()
     
+    let documentDirectories = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    
+    private var titles = [String]()
+
+    private var movieArchiveUrl = URL(fileURLWithPath: "")
+    
     public func fetchMovie(for title: String, with completion: @escaping (Result<Movie, Error>) -> Void) {
         OMDBApi.tittleToSearchFor(title: title)
         let url = OMDBApi.searchByTitleUrl
@@ -64,5 +70,43 @@ class MovieStore {
     enum MoviePosterError: Error {
         case imageCreation
         case missingImageUrl
+    }
+        
+    public func saveTheData(movie: Movie) -> Bool {
+        
+        saveMovieTitles(movie: movie)
+        
+        var docDirectory = documentDirectories.first!
+        docDirectory.appendPathComponent("\(movie.title).plist")
+        movieArchiveUrl = docDirectory
+        
+        print("Saving movie to: \(movieArchiveUrl) ")
+        do {
+            let encoder = PropertyListEncoder()
+            let data = try encoder.encode(movie)
+            try data.write(to: movieArchiveUrl, options: [.atomic])
+            return true
+        } catch {
+            print("Error encoding the movie: \(error)")
+            return false
+        }
+    }
+    
+    private func saveMovieTitles(movie: Movie) {
+        let userDefaults = UserDefaults.standard
+        if let movieTitles = userDefaults.value(forKey: "MovieTitles") {
+            titles = movieTitles as! [String]
+        }
+        titles.append(movie.title)
+        titles = duplicateRemover(array: titles)
+        for item in titles {
+            print("this is in me: \(item)")
+        }
+        userDefaults.set(titles, forKey: "MovieTitles")
+    }
+    
+    private func duplicateRemover(array: [String]) -> [String] {
+        let uniqueOrdered = Array(NSOrderedSet(array: array)) as! [String]
+        return uniqueOrdered
     }
 }
