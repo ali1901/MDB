@@ -12,6 +12,8 @@ class MovieDetailViewController: UIViewController {
     
     var store: MovieStore!
     var searchQuery = ""
+    var savedMovieUrl: URL?
+    var savedMovie: Movie?
     
     public var moveiDetaiLView: MovieDetailView! {
         guard isViewLoaded else {
@@ -24,8 +26,12 @@ class MovieDetailViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        print(searchQuery + "------------")
-        fetch(with: searchQuery)
+        if let savedUrl = savedMovieUrl {
+            loadMovie(from: savedUrl)
+        }else {
+            print(searchQuery + "------------")
+            fetch(with: searchQuery)
+        }
         
     }
     
@@ -41,7 +47,7 @@ class MovieDetailViewController: UIViewController {
                 DispatchQueue.main.async {
                     //self.movie = movie
                     self.setUpView(movie: movie)
-                    self.store.saveTheData(movie: movie)
+                    //self.store.saveTheData(movie: movie)
                 }
                 
                 print("Successfully found \(movie.title) for search query /\(query)/.")
@@ -49,6 +55,11 @@ class MovieDetailViewController: UIViewController {
                 print("Error fetching movie: \(error)")
             }
         }
+    }
+    
+    private func loadMovie(from url: URL) {
+        self.savedMovie = store.loadMovie(from: url)
+        setUpView(movie: savedMovie!)
     }
     
     private func setUpView(movie: Movie) {

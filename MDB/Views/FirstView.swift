@@ -12,6 +12,7 @@ public class FirstView: UIView {
 
     @IBOutlet weak var searchTxtField: UITextField!
     @IBOutlet weak var saerchBtn: UIButton!
+    @IBOutlet weak var collectionView: UICollectionView!
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

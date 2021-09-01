@@ -45,6 +45,20 @@ class MovieStore {
         task.resume()
     }
     
+    public func downloadImage(for movie: Movie) -> UIImage {
+        let imageUrl = movie.posterUrl
+        let request = URLRequest(url: imageUrl!)
+        let task = session.dataTask(with: request) { (data, response, error) in
+            if let imageData = data {
+                let image = UIImage(data: imageData)
+                return image!
+            }
+        }
+        task.resume()
+        
+    }
+
+    
     private func processMovieRequest(data: Data?, error: Error?) -> Result<Movie, Error> {
         guard let jsonData = data else {
             return .failure(error!)
@@ -103,6 +117,18 @@ class MovieStore {
             print("this is in me: \(item)")
         }
         userDefaults.set(titles, forKey: "MovieTitles")
+    }
+    
+    public func loadMovie(from url: URL) -> Movie? {
+        do {
+            let data = try Data(contentsOf: url)
+            let unArchiver = PropertyListDecoder()
+            let movie = try unArchiver.decode(Movie.self, from: data)
+            return movie
+        } catch {
+            print("Error loading movie: \(error)")
+        }
+        return nil
     }
     
     private func duplicateRemover(array: [String]) -> [String] {
