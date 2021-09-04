@@ -15,6 +15,8 @@ class FirstViewController: UIViewController {
     let userDefaults = UserDefaults.standard
     var titles = [String]()
     var loadedMovies = [Movie]()
+    var indxPthItm: Int? = nil
+
     
     private let sectionInsets = UIEdgeInsets(
     top: 50.0,
@@ -34,9 +36,7 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-//        DispatchQueue.main.async {
-//            self.titles = self.loadMovies()
-//        }
+
         firstView.searchTxtField.clearButtonMode = .whileEditing
         titles = loadMoviesAdresses()
     }
@@ -49,31 +49,21 @@ class FirstViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailVC = segue.destination as? MovieDetailViewController {
             detailVC.store = self.store
-            if let _ = sender as? UIButton { // TRIGGERING THE SEGUE WITH Search BUTTON
+            if segue.identifier == "searchSegue"{ // TRIGGERING THE SEGUE WITH Search BUTTON
                 if let text = firstView.searchTxtField.text {
                     detailVC.searchQuery = text
                 } else {
                     detailVC.searchQuery = "it"
                 }
             } else { // TRIGGERING THE SEGUE WITH COLLECTION VIEW CELLS
-                print("*/*/*/*/*/*/CV triggerd")
+                if let item = indxPthItm {
+                    detailVC.savedMovie = loadedMovies[item]
+                }
             }
         }
     }
     
     // _MARK: Custom funcs
-//    private func fetch(with query: String) {
-//        store.fetchMovie(for: query) { (movieResult) in
-//            switch movieResult {
-//            case let .success(movie):
-//                self.movie = movie
-//                print("Successfully found \(movie.title) for search query /\(query)/.")
-//            case let .failure(error):
-//                print("Error fetching movie: \(error)")
-//            }
-//        }
-//    }
-    
     private func loadMoviesAdresses() -> [String] {
         var titles = [String]()
         let dir = store.documentDirectories
@@ -81,7 +71,7 @@ class FirstViewController: UIViewController {
         if let movieTitles = userDefaults.value(forKey: "MovieTitles") {
             titles = movieTitles as! [String]
             for item in titles {
-                print("these are availible: \(item)")
+//                print("these are availible: \(item)")
                 docDir.appendPathComponent("\(item).plist")
                 loadMovies(url: docDir)
                 docDir = docDir.deletingLastPathComponent()
@@ -97,25 +87,22 @@ class FirstViewController: UIViewController {
             let data = try Data(contentsOf: url)
             let unarchiver = PropertyListDecoder()
             let movie = try unarchiver.decode(Movie.self, from: data)
-            print("i got this: \(movie.title)")
+//            print("i got this: \(movie.title)")
             loadedMovies.append(movie)
         } catch {
-            print(error)
+            print("Error loading movie from URL: \(error)")
         }        
     }
     
     // _MARK: IBActions
     @IBAction func searchTapped(_ sender: UIButton) {
         if let query = firstView.searchTxtField.text{
-            //fetch(with: query)
             self.searhQuery = query
         } else {
-            //fetch(with: "it")
             self.searhQuery = "it"
         }
     }
 }
-
 
 // MARK: -Extentions
 extension FirstViewController: UITextFieldDelegate {
@@ -129,25 +116,31 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CVCell", for: indexPath) as! CollectionViewCell
-        cell.imageView.image = store.downloadImage(for: loadedMovies[indexPath.item])
+        store.fetchImage(for: loadedMovies[indexPath.item], with: { (imageResult) in
+            switch imageResult {
+            case let .success(image):
+                OperationQueue.main.addOperation {
+                    cell.imageView.image = image
+                    cell.activityIndicator.stopAnimating()
+                }
+            case let .failure(error):
+                print("Error downloading image: \(error)")
+            }
+        })
         cell.titleLabel.text = loadedMovies[indexPath.item].title
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "detailSegue", sender: nil)
+        indxPthItm = indexPath.item
+        performSegue(withIdentifier: "cellSegue", sender: nil)
     }
 }
 
 extension FirstViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(
-      _ collectionView: UICollectionView,
-      layout collectionViewLayout: UICollectionViewLayout,
-      sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-      // 2
+    func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAt indexPath: IndexPath) -> CGSize {
       let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
       let availableWidth = view.frame.width - paddingSpace
       let widthPerItem = availableWidth / itemsPerRow
@@ -155,21 +148,11 @@ extension FirstViewController: UICollectionViewDelegateFlowLayout {
       return CGSize(width: widthPerItem, height: widthPerItem)
     }
     
-    // 3
-    func collectionView(
-      _ collectionView: UICollectionView,
-      layout collectionViewLayout: UICollectionViewLayout,
-      insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,insetForSectionAt section: Int) -> UIEdgeInsets {
       return sectionInsets
     }
     
-    // 4
-    func collectionView(
-      _ collectionView: UICollectionView,
-      layout collectionViewLayout: UICollectionViewLayout,
-      minimumLineSpacingForSectionAt section: Int
-    ) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,minimumLineSpacingForSectionAt section: Int) -> CGFloat {
       return sectionInsets.left
     }
 }

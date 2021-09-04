@@ -12,7 +12,7 @@ class MovieDetailViewController: UIViewController {
     
     var store: MovieStore!
     var searchQuery = ""
-    var savedMovieUrl: URL?
+//    var savedMovieUrl: URL?
     var savedMovie: Movie?
     
     public var moveiDetaiLView: MovieDetailView! {
@@ -24,10 +24,11 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print(savedMovie?.title ?? "dalasMavs" + "+++++++++++++++++++++++++++++++")
         // Do any additional setup after loading the view.
-        if let savedUrl = savedMovieUrl {
-            loadMovie(from: savedUrl)
+        if let saved = savedMovie {
+            setUpView(movie: saved)
+            savedMovie = nil
         }else {
             print(searchQuery + "------------")
             fetch(with: searchQuery)
@@ -57,10 +58,10 @@ class MovieDetailViewController: UIViewController {
         }
     }
     
-    private func loadMovie(from url: URL) {
-        self.savedMovie = store.loadMovie(from: url)
-        setUpView(movie: savedMovie!)
-    }
+//    private func loadMovie(from url: URL) {
+//        self.savedMovie = store.loadMovie(from: url)
+//        setUpView(movie: savedMovie!)
+//    }
     
     private func setUpView(movie: Movie) {
         moveiDetaiLView.titleL.text = movie.title

@@ -30,14 +30,13 @@
                                         <state key="normal" title="Search"/>
                                         <connections>
                                             <action selector="searchTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SA2-Ll-V1J"/>
-                                            <segue destination="JTD-mq-NUf" kind="show" identifier="detailSegue" id="agT-Wh-lGn"/>
+                                            <segue destination="JTD-mq-NUf" kind="show" identifier="searchSegue" id="agT-Wh-lGn"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iik-zg-HEQ">
                                 <rect key="frame" x="8" y="138" width="398" height="716"/>
-                                <color key="backgroundColor" red="0.0" green="0.58580315110000003" blue="0.070729173719999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FAb-LB-mMT">
                                     <size key="itemSize" width="185" height="239"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -81,6 +80,10 @@
                                                     </constraints>
                                                     <blurEffect style="regular"/>
                                                 </visualEffectView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kf1-VW-olO">
+                                                    <rect key="frame" x="83" y="110" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="FsE-Ae-CqJ" secondAttribute="trailing" id="01v-8h-GRm"/>
@@ -92,11 +95,12 @@
                                                 <constraint firstItem="OKe-H2-aRk" firstAttribute="leading" secondItem="Wtp-Vy-9mr" secondAttribute="leading" id="wxG-6a-lY1"/>
                                             </constraints>
                                         </collectionViewCellContentView>
-                                        <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <size key="customSize" width="185" height="239"/>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="kf1-VW-olO" id="90f-Js-FpP"/>
                                             <outlet property="imageView" destination="OKe-H2-aRk" id="p2C-wQ-5La"/>
                                             <outlet property="titleLabel" destination="SJG-3F-ubH" id="D79-Ja-cnv"/>
+                                            <segue destination="JTD-mq-NUf" kind="show" identifier="cellSegue" id="1aI-pH-gRs"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -191,6 +195,7 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -235,4 +240,7 @@
             <point key="canvasLocation" x="131.8840579710145" y="138.61607142857142"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="agT-Wh-lGn"/>
+    </inferredMetricsTieBreakers>
 </document>

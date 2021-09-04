@@ -45,18 +45,18 @@ class MovieStore {
         task.resume()
     }
     
-    public func downloadImage(for movie: Movie) -> UIImage {
-        let imageUrl = movie.posterUrl
-        let request = URLRequest(url: imageUrl!)
-        let task = session.dataTask(with: request) { (data, response, error) in
-            if let imageData = data {
-                let image = UIImage(data: imageData)
-                return image!
-            }
-        }
-        task.resume()
-        
-    }
+//    public func downloadImage(for movie: Movie) -> UIImage {
+//        let imageUrl = movie.posterUrl
+//        let request = URLRequest(url: imageUrl!)
+//        let task = session.dataTask(with: request) { (data, response, error) in
+//            if let imageData = data {
+//                let image = UIImage(data: imageData)
+//                return image!
+//            }
+//        }
+//        task.resume()
+//        
+//    }
 
     
     private func processMovieRequest(data: Data?, error: Error?) -> Result<Movie, Error> {
