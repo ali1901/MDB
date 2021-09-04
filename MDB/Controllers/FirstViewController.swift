@@ -134,7 +134,9 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         indxPthItm = indexPath.item
-        performSegue(withIdentifier: "cellSegue", sender: nil)
+        if let _ = indxPthItm {
+            performSegue(withIdentifier: "cellSegue", sender: nil)
+        }
     }
 }
 
