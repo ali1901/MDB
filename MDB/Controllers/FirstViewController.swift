@@ -12,17 +12,15 @@ class FirstViewController: UIViewController {
 
     var store: MovieStore!
     var searhQuery = ""
-    let userDefaults = UserDefaults.standard
-    var titles = [String]()
     var loadedMovies = [Movie]()
     var indxPthItm: Int? = nil
 
     
     private let sectionInsets = UIEdgeInsets(
-    top: 50.0,
-    left: 20.0,
-    bottom: 50.0,
-    right: 20.0)
+        top: 10.0,
+        left: 20.0,
+        bottom: 50.0,
+        right: 20.0)
     
     private let itemsPerRow: CGFloat = 2
     
@@ -38,61 +36,46 @@ class FirstViewController: UIViewController {
         // Do any additional setup after loading the view.
 
         firstView.searchTxtField.clearButtonMode = .whileEditing
-        titles = loadMoviesAdresses()
+        loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         firstView.searchTxtField.text = ""
         searhQuery = ""
+//        firstView.collectionView.reloadSections(IndexSet(integer: 0))
+//        firstView.collectionView.reloadData() //MESSES THE COLLECTION VIEW
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let detailVC = segue.destination as? MovieDetailViewController {
-            detailVC.store = self.store
-            if segue.identifier == "searchSegue"{ // TRIGGERING THE SEGUE WITH Search BUTTON
+        switch segue.identifier {
+        case "searchSegue":
+            if let dvc = segue.destination as? MovieDetailViewController {
+                dvc.store = self.store
                 if let text = firstView.searchTxtField.text {
-                    detailVC.searchQuery = text
+                    dvc.searchQuery = text
                 } else {
-                    detailVC.searchQuery = "it"
-                }
-            } else { // TRIGGERING THE SEGUE WITH COLLECTION VIEW CELLS
-                if let item = indxPthItm {
-                    detailVC.savedMovie = loadedMovies[item]
+                    dvc.searchQuery = "it"
                 }
             }
+        case "cellSegue":
+            if let dvc = segue.destination as? MovieDetailViewController {
+                dvc.store = self.store
+                if let item = indxPthItm {
+                    dvc.savedMovie = loadedMovies[item]
+                }
+            }
+        case "favoritesSegue":
+            if let dVC = segue.destination as? FavoritesViewController {
+                dVC.store = self.store
+            }
+        default:
+            print("Im on non")
         }
     }
     
     // _MARK: Custom funcs
-    private func loadMoviesAdresses() -> [String] {
-        var titles = [String]()
-        let dir = store.documentDirectories
-        var docDir = dir.first!
-        if let movieTitles = userDefaults.value(forKey: "MovieTitles") {
-            titles = movieTitles as! [String]
-            for item in titles {
-//                print("these are availible: \(item)")
-                docDir.appendPathComponent("\(item).plist")
-                loadMovies(url: docDir)
-                docDir = docDir.deletingLastPathComponent()
-//                print ("this the address: \(docDir)")
-                //                print("these are availible: \(movie?.year)")
-            }
-        }
-        return titles
-    }
-    
-    private func loadMovies(url: URL) {
-        do {
-            let data = try Data(contentsOf: url)
-            let unarchiver = PropertyListDecoder()
-            let movie = try unarchiver.decode(Movie.self, from: data)
-//            print("i got this: \(movie.title)")
-            loadedMovies.append(movie)
-        } catch {
-            print("Error loading movie from URL: \(error)")
-        }        
-    }
+
     
     // _MARK: IBActions
     @IBAction func searchTapped(_ sender: UIButton) {
@@ -100,6 +83,15 @@ class FirstViewController: UIViewController {
             self.searhQuery = query
         } else {
             self.searhQuery = "it"
+        }
+    }
+    @IBAction func toggleEditingMode(_ sender: UIBarButtonItem) {
+        if isEditing {
+            sender.title = "Edit"
+            setEditing(false, animated: true)
+        } else {
+            sender.title = "Done"
+            setEditing(true, animated: true)
         }
     }
 }
@@ -128,6 +120,7 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
             }
         })
         cell.titleLabel.text = loadedMovies[indexPath.item].title
+        cell.isHighlighted = isEditing
         
         return cell
     }
@@ -138,6 +131,8 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
             performSegue(withIdentifier: "cellSegue", sender: nil)
         }
     }
+    
+    
 }
 
 extension FirstViewController: UICollectionViewDelegateFlowLayout {

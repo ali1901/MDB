@@ -18,6 +18,7 @@ class MovieStore {
     let documentDirectories = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
     private var titles = [String]()
+    private var favoriteTitles = [String]()
 
     private var movieArchiveUrl = URL(fileURLWithPath: "")
     
@@ -44,20 +45,6 @@ class MovieStore {
         }
         task.resume()
     }
-    
-//    public func downloadImage(for movie: Movie) -> UIImage {
-//        let imageUrl = movie.posterUrl
-//        let request = URLRequest(url: imageUrl!)
-//        let task = session.dataTask(with: request) { (data, response, error) in
-//            if let imageData = data {
-//                let image = UIImage(data: imageData)
-//                return image!
-//            }
-//        }
-//        task.resume()
-//        
-//    }
-
     
     private func processMovieRequest(data: Data?, error: Error?) -> Result<Movie, Error> {
         guard let jsonData = data else {
@@ -88,7 +75,7 @@ class MovieStore {
         
     public func saveTheData(movie: Movie) -> Bool {
         
-        saveMovieTitles(movie: movie)
+        saveMovieTitles(movie: movie, with: "MovieTitles")
         
         var docDirectory = documentDirectories.first!
         docDirectory.appendPathComponent("\(movie.title).plist")
@@ -106,17 +93,35 @@ class MovieStore {
         }
     }
     
-    private func saveMovieTitles(movie: Movie) {
+    public func saveMovieTitles(movie: Movie, with key: String) {
         let userDefaults = UserDefaults.standard
-        if let movieTitles = userDefaults.value(forKey: "MovieTitles") {
-            titles = movieTitles as! [String]
+        
+        
+        switch key {
+        case "MovieTitles":
+            if let movieTitles = userDefaults.value(forKey: "MovieTitles") {
+                titles = movieTitles as! [String]
+            }
+            titles.append(movie.title)
+            titles = duplicateRemover(array: titles)
+            for item in titles {
+                print("this is in me: \(item)")
+            }
+            userDefaults.set(titles, forKey: "MovieTitles")
+        case "Favorites":
+            if let movieTitles = userDefaults.value(forKey: "Favorites") {
+                favoriteTitles = movieTitles as! [String]
+            }
+            for item in favoriteTitles {
+                print("this is in favesssssss: \(item)")
+            }
+            favoriteTitles.append(movie.title)
+            favoriteTitles = duplicateRemover(array: favoriteTitles)
+            userDefaults.set(favoriteTitles, forKey: "Favorites")
+        default:
+            break
         }
-        titles.append(movie.title)
-        titles = duplicateRemover(array: titles)
-        for item in titles {
-            print("this is in me: \(item)")
-        }
-        userDefaults.set(titles, forKey: "MovieTitles")
+        
     }
     
     public func loadMovie(from url: URL) -> Movie? {
@@ -134,5 +139,39 @@ class MovieStore {
     private func duplicateRemover(array: [String]) -> [String] {
         let uniqueOrdered = Array(NSOrderedSet(array: array)) as! [String]
         return uniqueOrdered
+    }
+    
+    public func loadMoviesAdresses(for key: String) -> [Movie] {
+        var loadedMovies = [Movie]()
+        var titles = [String]()
+        let dir = documentDirectories
+        var docDir = dir.first!
+        if let movieTitles = UserDefaults.standard.value(forKey: key) {
+            titles = movieTitles as! [String]
+            for item in titles {
+                print("these are availible: \(item)")
+                docDir.appendPathComponent("\(item).plist")
+                if let m = loadMovies(url: docDir) {
+                    loadedMovies.append(m)
+                }
+                docDir = docDir.deletingLastPathComponent()
+                //                print ("this the address: \(docDir)")
+                //                print("these are availible: \(movie?.year)")
+            }
+        }
+        return loadedMovies
+    }
+    
+    private func loadMovies(url: URL) -> Movie? {
+        do {
+            let data = try Data(contentsOf: url)
+            let unarchiver = PropertyListDecoder()
+            let movie = try unarchiver.decode(Movie.self, from: data)
+            return movie
+            //            print("i got this: \(movie.title)")
+        } catch {
+            print("Error loading movie from URL: \(error)")
+            return nil
+        }
     }
 }

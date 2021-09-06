@@ -13,7 +13,7 @@ class MovieDetailViewController: UIViewController {
     var store: MovieStore!
     var searchQuery = ""
 //    var savedMovieUrl: URL?
-    var savedMovie: Movie?
+    var savedMovie: Movie? = nil
     
     public var moveiDetaiLView: MovieDetailView! {
         guard isViewLoaded else {
@@ -28,7 +28,6 @@ class MovieDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         if let saved = savedMovie {
             setUpView(movie: saved)
-            savedMovie = nil
         }else {
             print(searchQuery + "------------")
             fetch(with: searchQuery)
@@ -47,8 +46,9 @@ class MovieDetailViewController: UIViewController {
             case let .success(movie):
                 DispatchQueue.main.async {
                     //self.movie = movie
+                    self.savedMovie = movie
                     self.setUpView(movie: movie)
-                    //self.store.saveTheData(movie: movie)
+                    self.store.saveTheData(movie: movie)
                 }
                 
                 print("Successfully found \(movie.title) for search query /\(query)/.")
@@ -82,6 +82,14 @@ class MovieDetailViewController: UIViewController {
             case let .failure(error):
                 print("Error downloading Image: \(error)")
             }
+        }
+    }
+    
+    // MARK: - IBActions
+    @IBAction func addToFavorites(_ sender: UIBarButtonItem) {
+        if let movie = savedMovie {
+            print ("2-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/ \(movie.title)")
+            store.saveMovieTitles(movie: movie, with: "Favorites")
         }
     }
 }
