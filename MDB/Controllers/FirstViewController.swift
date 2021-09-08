@@ -40,11 +40,13 @@ class FirstViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
         firstView.searchTxtField.text = ""
         searhQuery = ""
-//        firstView.collectionView.reloadSections(IndexSet(integer: 0))
-//        firstView.collectionView.reloadData() //MESSES THE COLLECTION VIEW
+//        firstView.collectionView.collectionViewLayout.invalidateLayout()
+        firstView.collectionView.reloadSections(IndexSet(integer: 0)) //NOT WORKING
+        firstView.collectionView.reloadData() //NOT WORKING
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

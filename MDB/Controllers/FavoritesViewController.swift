@@ -8,14 +8,14 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController {
+class FavoritesViewController: UITableViewController {
 
-    var favoirtesView: FavoritesView! {
-        guard isViewLoaded else {
-            return nil
-        }
-        return (view as! FavoritesView)
-    }
+//    var favoirtesView: FavoritesView! {
+//        guard isViewLoaded else {
+//            return nil
+//        }
+//        return (view as! FavoritesView)
+//    }
         
     var store: MovieStore!
     var movies = [Movie]()
@@ -24,16 +24,31 @@ class FavoritesViewController: UIViewController {
         super.viewDidLoad()
 
         movies = store.loadMoviesAdresses(for: "Favorites")
+//        setEditing(true, animated: true)
+        print("what's the status: \(isEditing)")
+//        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = 100
     }
 
+    // MARK: - @IBActions
+    @IBAction func editTapped(_ sender: UIBarButtonItem) {
+        if isEditing {
+            sender.title = "Edit"
+            setEditing(false, animated: true)
+        } else {
+            sender.title = "Done"
+            setEditing(true, animated: true)
+        }
+    }
 }
 
-extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension FavoritesViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movies.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FavoritesTableViewCell
         store.fetchImage(for: movies[indexPath.row], with: { (imgRes) in
             switch imgRes {
@@ -49,6 +64,15 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
         cell.subTLabel.text = movies[indexPath.row].year
     
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if store.deleteMovie(for: "Favorites", with: indexPath.row) {
+                movies.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+        }
     }
     
     

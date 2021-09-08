@@ -174,4 +174,19 @@ class MovieStore {
             return nil
         }
     }
+    
+    
+    public func deleteMovie(for key: String, with index: Int) -> Bool {
+        let ud = UserDefaults.standard
+        if let titles = ud.value(forKey: key) {
+            var mts = titles as! [String]
+            let rmvd = mts.remove(at: index)
+            print("\(rmvd) is removed from favorites list.")
+            ud.setValue(mts, forKey: key)
+
+            return true
+        } else {
+            return false
+        }
+    }
 }
