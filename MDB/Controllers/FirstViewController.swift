@@ -48,8 +48,6 @@ class FirstViewController: UIViewController {
         loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
         firstView.searchTxtField.text = ""
         searhQuery = ""
-//        firstView.collectionView.collectionViewLayout.invalidateLayout()
-        firstView.collectionView.reloadSections(IndexSet(integer: 0)) //NOT WORKING
         firstView.collectionView.reloadData() //NOT WORKING
     }
     
