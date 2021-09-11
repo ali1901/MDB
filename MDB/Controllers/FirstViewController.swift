@@ -37,11 +37,15 @@ class FirstViewController: UIViewController {
 
         firstView.searchTxtField.clearButtonMode = .whileEditing
         loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
+        for item in loadedMovies {
+            print("***********////////***********////////: "+item.title)
+        }
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
+        loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
         firstView.searchTxtField.text = ""
         searhQuery = ""
 //        firstView.collectionView.collectionViewLayout.invalidateLayout()
@@ -118,6 +122,10 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
                     cell.activityIndicator.stopAnimating()
                 }
             case let .failure(error):
+                OperationQueue.main.addOperation {
+                    cell.imageView.image = UIImage.add
+                    cell.activityIndicator.stopAnimating()
+                }
                 print("Error downloading image: \(error)")
             }
         })
@@ -134,6 +142,15 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
         }
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        firstView.collectionView.allowsMultipleSelection = editing
+        let indexPaths = firstView.collectionView.indexPathsForVisibleItems
+        for indexPath in indexPaths {
+            let cell = firstView.collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+            cell.isInEditingMode = editing
+        }
+    }
     
 }
 

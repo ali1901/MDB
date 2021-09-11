@@ -13,4 +13,6 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var isInEditingMode: Bool = false
+    
 }
