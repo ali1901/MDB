@@ -14,7 +14,36 @@ class FirstViewController: UIViewController {
     var searhQuery = ""
     var loadedMovies = [Movie]()
     var indxPthItm: Int? = nil
-
+    
+    var dictionarySelectedIndecPath: [IndexPath: Bool] = [:]
+    
+    enum Mode {
+      case view
+      case select
+    }
+    
+    var mMode: Mode = .view {
+      didSet {
+        switch mMode {
+        case .view:
+          for (key, value) in dictionarySelectedIndecPath {
+            if value {
+                firstView.collectionView.deselectItem(at: key, animated: true) //collectionView.deselectItem(at: key, animated: true)
+            }
+          }
+          
+          dictionarySelectedIndecPath.removeAll()
+          
+          firstView.editBarBtn.title = "Select" //selectBarButton.title = "Select"
+          //navigationItem.leftBarButtonItem = nil
+          firstView.collectionView.allowsMultipleSelection = false //collectionView.allowsMultipleSelection = false
+        case .select:
+            firstView.editBarBtn.title = "Cancel" //selectBarButton.title = "Cancel"
+          //navigationItem.leftBarButtonItem = deleteBarButton
+          firstView.collectionView.allowsMultipleSelection = true //collectionView.allowsMultipleSelection = true
+        }
+      }
+    }
     
     private let sectionInsets = UIEdgeInsets(
         top: 10.0,
@@ -48,7 +77,7 @@ class FirstViewController: UIViewController {
         loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
         firstView.searchTxtField.text = ""
         searhQuery = ""
-        firstView.collectionView.reloadData() //NOT WORKING
+        firstView.collectionView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -90,13 +119,16 @@ class FirstViewController: UIViewController {
         }
     }
     @IBAction func toggleEditingMode(_ sender: UIBarButtonItem) {
-        if isEditing {
-            sender.title = "Edit"
-            setEditing(false, animated: true)
-        } else {
-            sender.title = "Done"
-            setEditing(true, animated: true)
-        }
+        mMode = mMode == .view ? .select : .view
+//        if isEditing {
+//            sender.title = "Edit"
+//            setEditing(false, animated: true)
+//        } else {
+//            sender.title = "Done"
+//            setEditing(true, animated: true)
+//        }
+//        isEditing = true
+//        setEditing(true, animated: true)
     }
 }
 
@@ -135,20 +167,31 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         indxPthItm = indexPath.item
-        if let _ = indxPthItm {
-            performSegue(withIdentifier: "cellSegue", sender: nil)
+        switch mMode {
+        case .view:
+          collectionView.deselectItem(at: indexPath, animated: true)
+          let item = loadedMovies[indexPath.item]
+          performSegue(withIdentifier: "cellSegue", sender: item)
+        case .select:
+          dictionarySelectedIndecPath[indexPath] = true
         }
     }
     
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        firstView.collectionView.allowsMultipleSelection = editing
-        let indexPaths = firstView.collectionView.indexPathsForVisibleItems
-        for indexPath in indexPaths {
-            let cell = firstView.collectionView.cellForItem(at: indexPath) as! CollectionViewCell
-            cell.isInEditingMode = editing
-        }
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+      if mMode == .select {
+        dictionarySelectedIndecPath[indexPath] = false
+      }
     }
+    
+    //    override func setEditing(_ editing: Bool, animated: Bool) {
+    //        super.setEditing(editing, animated: animated)
+    //        firstView.collectionView.allowsMultipleSelection = editing
+    //        let indexPaths = firstView.collectionView.indexPathsForVisibleItems
+    //        for indexPath in indexPaths {
+    //            let cell = firstView.collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+    //            cell.isInEditingMode = editing
+    //        }
+    //    }
     
 }
 

@@ -84,6 +84,11 @@
                                                     <rect key="frame" x="83" y="110" width="20" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </activityIndicatorView>
+                                                <view hidden="YES" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N9G-SR-B6f">
+                                                    <rect key="frame" x="0.0" y="0.0" width="185" height="239"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="FsE-Ae-CqJ" secondAttribute="trailing" id="01v-8h-GRm"/>
@@ -98,6 +103,7 @@
                                         <size key="customSize" width="185" height="239"/>
                                         <connections>
                                             <outlet property="activityIndicator" destination="kf1-VW-olO" id="90f-Js-FpP"/>
+                                            <outlet property="highLightView" destination="N9G-SR-B6f" id="Hvg-fs-iTo"/>
                                             <outlet property="imageView" destination="OKe-H2-aRk" id="p2C-wQ-5La"/>
                                             <outlet property="titleLabel" destination="SJG-3F-ubH" id="D79-Ja-cnv"/>
                                         </connections>
@@ -124,6 +130,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <connections>
                             <outlet property="collectionView" destination="iik-zg-HEQ" id="p3X-z8-e85"/>
+                            <outlet property="editBarBtn" destination="T5T-HO-44W" id="KhH-Uf-zfc"/>
                             <outlet property="saerchBtn" destination="2hK-JP-275" id="bje-fc-u3J"/>
                             <outlet property="searchTxtField" destination="fhR-bJ-mzf" id="uex-Tn-CLc"/>
                         </connections>
