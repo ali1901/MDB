@@ -14,6 +14,7 @@ public class FirstView: UIView {
     @IBOutlet weak var saerchBtn: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editBarBtn: UIBarButtonItem!
+    @IBOutlet weak var deleteBtn: UIButton!
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

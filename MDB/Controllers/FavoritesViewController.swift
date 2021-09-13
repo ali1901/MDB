@@ -68,7 +68,7 @@ extension FavoritesViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if store.deleteMovie(for: "Favorites", with: indexPath.row) {
+            if store.deleteFavoriteMovie(for: "Favorites", with: indexPath.row) {
                 movies.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }

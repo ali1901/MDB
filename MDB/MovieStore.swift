@@ -176,7 +176,7 @@ class MovieStore {
     }
     
     
-    public func deleteMovie(for key: String, with index: Int) -> Bool {
+    public func deleteFavoriteMovie(for key: String, with index: Int) -> Bool {
         let ud = UserDefaults.standard
         if let titles = ud.value(forKey: key) {
             var mts = titles as! [String]
@@ -188,5 +188,24 @@ class MovieStore {
         } else {
             return false
         }
+    }
+    
+    public func deleteMovie(for title: String, index: Int) {
+        let ud = UserDefaults.standard
+        let movieTitles = ud.value(forKey: "MovieTitles")
+        var ts = movieTitles as! [String]
+        ts.remove(at: index)
+        ud.set(ts, forKey: "MovieTitles")
+        
+        
+        var docDirectory = documentDirectories.first!
+        docDirectory.appendPathComponent("\(title).plist")
+        let movieArchiveUrl = docDirectory
+        do {
+            try FileManager.default.removeItem(at: movieArchiveUrl)
+        } catch {
+            print("Error deleting file from memory.")
+        }
+        
     }
 }

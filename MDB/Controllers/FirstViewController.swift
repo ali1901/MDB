@@ -35,10 +35,12 @@ class FirstViewController: UIViewController {
           dictionarySelectedIndecPath.removeAll()
           
           firstView.editBarBtn.title = "Select" //selectBarButton.title = "Select"
+          firstView.deleteBtn.isHidden = true
           //navigationItem.leftBarButtonItem = nil
           firstView.collectionView.allowsMultipleSelection = false //collectionView.allowsMultipleSelection = false
         case .select:
             firstView.editBarBtn.title = "Cancel" //selectBarButton.title = "Cancel"
+            firstView.deleteBtn.isHidden = false
           //navigationItem.leftBarButtonItem = deleteBarButton
           firstView.collectionView.allowsMultipleSelection = true //collectionView.allowsMultipleSelection = true
         }
@@ -64,6 +66,7 @@ class FirstViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
+        firstView.deleteBtn.isHidden = true
         firstView.searchTxtField.clearButtonMode = .whileEditing
         loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
         for item in loadedMovies {
@@ -120,15 +123,17 @@ class FirstViewController: UIViewController {
     }
     @IBAction func toggleEditingMode(_ sender: UIBarButtonItem) {
         mMode = mMode == .view ? .select : .view
-//        if isEditing {
-//            sender.title = "Edit"
-//            setEditing(false, animated: true)
-//        } else {
-//            sender.title = "Done"
-//            setEditing(true, animated: true)
-//        }
-//        isEditing = true
-//        setEditing(true, animated: true)
+    }
+    
+    @IBAction func deleteBTN(_ sender: UIButton) {
+        for item in dictionarySelectedIndecPath {
+            let t = loadedMovies[item.key.item].title
+            print(t, "is about to be removed.")
+            self.store.deleteMovie(for: t, index: item.key.item)
+            loadedMovies.remove(at: item.key.item)
+        }
+        print("----")
+        firstView.collectionView.reloadData()
     }
 }
 

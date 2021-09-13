@@ -114,6 +114,18 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="8vw-Wk-Ynz"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfF-1E-iUb">
+                                <rect key="frame" x="344" y="812" width="50" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="W68-FS-ZlZ"/>
+                                    <constraint firstAttribute="width" constant="50" id="ekW-1k-ukb"/>
+                                </constraints>
+                                <state key="normal" image="trash" catalog="system"/>
+                                <connections>
+                                    <action selector="deleteBTN:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UZ5-j2-tSr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -122,14 +134,17 @@
                             <constraint firstItem="EcW-HH-hiy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="FOI-Gk-7eV"/>
                             <constraint firstItem="iik-zg-HEQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="QyI-tX-dj5"/>
                             <constraint firstItem="EcW-HH-hiy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="bhU-8u-j5O"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gfF-1E-iUb" secondAttribute="trailing" constant="20" id="cmp-Ag-32N"/>
                             <constraint firstItem="EcW-HH-hiy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="hmk-Oq-u3E"/>
                             <constraint firstAttribute="bottom" secondItem="iik-zg-HEQ" secondAttribute="bottom" id="mrt-Dt-jfU"/>
                             <constraint firstItem="iik-zg-HEQ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="uVO-o9-z5z"/>
+                            <constraint firstItem="gfF-1E-iUb" firstAttribute="top" secondItem="iik-zg-HEQ" secondAttribute="bottom" constant="-84" id="uhr-hN-gxr"/>
                             <constraint firstItem="EcW-HH-hiy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="ycM-va-hNJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <connections>
                             <outlet property="collectionView" destination="iik-zg-HEQ" id="p3X-z8-e85"/>
+                            <outlet property="deleteBtn" destination="gfF-1E-iUb" id="P5w-3z-k2l"/>
                             <outlet property="editBarBtn" destination="T5T-HO-44W" id="KhH-Uf-zfc"/>
                             <outlet property="saerchBtn" destination="2hK-JP-275" id="bje-fc-u3J"/>
                             <outlet property="searchTxtField" destination="fhR-bJ-mzf" id="uex-Tn-CLc"/>
@@ -343,4 +358,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="kxD-Sg-3OD"/>
     </inferredMetricsTieBreakers>
+    <resources>
+        <image name="trash" catalog="system" width="121" height="128"/>
+    </resources>
 </document>
