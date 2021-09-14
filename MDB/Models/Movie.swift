@@ -15,14 +15,15 @@ class Movie: Codable {
     let plot: String
     let imdbRating: String
     let posterUrl: URL?
-    
-//    init (title: String, year: String, rate: String, plot: String, imdb: String){
-//        self.title = title
-//        self.year = year
-//        self.rate = rate
-//        self.plot = plot
-//        self.imdbRating = imdb
+    let movieKey: String? = UUID().uuidString
+//    init() {
+//        self.title = ""
+//        self.year = ""
+//        self.rate = ""
+//        self.plot = ""
+//        self.imdbRating = ""
 //        self.posterUrl = nil
+//        self.movieKey = UUID().uuidString
 //    }
     
     enum CodingKeys: String, CodingKey {
@@ -32,5 +33,6 @@ class Movie: Codable {
         case plot = "Plot"
         case imdbRating
         case posterUrl = "Poster"
+        case movieKey
     }
 }

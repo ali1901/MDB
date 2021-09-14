@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let rootViewController = window!.rootViewController as! UINavigationController
         let firstViewController = rootViewController.topViewController as! FirstViewController
         firstViewController.store = MovieStore()
+        firstViewController.imageStore = ImageStore()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

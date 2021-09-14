@@ -18,6 +18,7 @@ class FavoritesViewController: UITableViewController {
 //    }
         
     var store: MovieStore!
+    var imageStore: ImageStore!
     var movies = [Movie]()
     
     override func viewDidLoad() {

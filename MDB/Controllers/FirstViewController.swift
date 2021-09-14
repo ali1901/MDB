@@ -11,6 +11,7 @@ import UIKit
 class FirstViewController: UIViewController {
 
     var store: MovieStore!
+    var imageStore: ImageStore!
     var searhQuery = ""
     var loadedMovies = [Movie]()
     var indxPthItm: Int? = nil
@@ -88,6 +89,7 @@ class FirstViewController: UIViewController {
         case "searchSegue":
             if let dvc = segue.destination as? MovieDetailViewController {
                 dvc.store = self.store
+                dvc.imageStore = self.imageStore
                 if let text = firstView.searchTxtField.text {
                     dvc.searchQuery = text
                 } else {
@@ -97,6 +99,7 @@ class FirstViewController: UIViewController {
         case "cellSegue":
             if let dvc = segue.destination as? MovieDetailViewController {
                 dvc.store = self.store
+                dvc.imageStore = self.imageStore
                 if let item = indxPthItm {
                     dvc.savedMovie = loadedMovies[item]
                 }
@@ -104,6 +107,7 @@ class FirstViewController: UIViewController {
         case "favoritesSegue":
             if let dVC = segue.destination as? FavoritesViewController {
                 dVC.store = self.store
+                dVC.imageStore = self.imageStore
             }
         default:
             print("Im on non")
@@ -129,6 +133,7 @@ class FirstViewController: UIViewController {
         for item in dictionarySelectedIndecPath {
             let t = loadedMovies[item.key.item].title
             print(t, "is about to be removed.")
+            self.imageStore.deleteImage(forKey: loadedMovies[item.key.item].movieKey!)
             self.store.deleteMovie(for: t, index: item.key.item)
             loadedMovies.remove(at: item.key.item)
         }
@@ -149,21 +154,29 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CVCell", for: indexPath) as! CollectionViewCell
-        store.fetchImage(for: loadedMovies[indexPath.item], with: { (imageResult) in
-            switch imageResult {
-            case let .success(image):
-                OperationQueue.main.addOperation {
-                    cell.imageView.image = image
-                    cell.activityIndicator.stopAnimating()
-                }
-            case let .failure(error):
-                OperationQueue.main.addOperation {
-                    cell.imageView.image = UIImage.add
-                    cell.activityIndicator.stopAnimating()
-                }
-                print("Error downloading image: \(error)")
-            }
-        })
+//        store.fetchImage(for: loadedMovies[indexPath.item], with: { (imageResult) in
+//            switch imageResult {
+//            case let .success(image):
+//                OperationQueue.main.addOperation {
+//                    cell.imageView.image = image
+//                    cell.activityIndicator.stopAnimating()
+//                }
+//            case let .failure(error):
+//                OperationQueue.main.addOperation {
+//                    cell.imageView.image = UIImage.add
+//                    cell.activityIndicator.stopAnimating()
+//                }
+//                print("Error downloading image: \(error)")
+//            }
+//        })
+        let key = loadedMovies[indexPath.item].movieKey!
+        print("/*//*/*/*/*/**/*/**/*/*/*/*/*/*/: \(loadedMovies[indexPath.item].title),\(key)")
+        if let mage = self.imageStore.image(forKey: key) {
+            print("GOT TEH IMAGE")
+            cell.imageView.image = mage
+        } else {
+            print("THERE IS NO IMAGE")
+        }
         cell.titleLabel.text = loadedMovies[indexPath.item].title
         cell.isHighlighted = isEditing
         
@@ -187,17 +200,6 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
         dictionarySelectedIndecPath[indexPath] = false
       }
     }
-    
-    //    override func setEditing(_ editing: Bool, animated: Bool) {
-    //        super.setEditing(editing, animated: animated)
-    //        firstView.collectionView.allowsMultipleSelection = editing
-    //        let indexPaths = firstView.collectionView.indexPathsForVisibleItems
-    //        for indexPath in indexPaths {
-    //            let cell = firstView.collectionView.cellForItem(at: indexPath) as! CollectionViewCell
-    //            cell.isInEditingMode = editing
-    //        }
-    //    }
-    
 }
 
 extension FirstViewController: UICollectionViewDelegateFlowLayout {

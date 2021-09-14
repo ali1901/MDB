@@ -11,6 +11,8 @@ import UIKit
 class MovieDetailViewController: UIViewController {
     
     var store: MovieStore!
+    var imageStore: ImageStore!
+    
     var searchQuery = ""
 //    var savedMovieUrl: URL?
     var savedMovie: Movie? = nil
@@ -28,6 +30,7 @@ class MovieDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         if let saved = savedMovie {
             setUpView(movie: saved)
+            updateImageViewfromDisk(for: saved)
         }else {
             print(searchQuery + "------------")
             fetch(with: searchQuery)
@@ -48,6 +51,7 @@ class MovieDetailViewController: UIViewController {
                     //self.movie = movie
                     self.savedMovie = movie
                     self.setUpView(movie: movie)
+                    self.updateImageView(for: movie)
                     self.store.saveTheData(movie: movie)
                 }
                 
@@ -69,7 +73,6 @@ class MovieDetailViewController: UIViewController {
         moveiDetaiLView.ageL.text = movie.rate
         moveiDetaiLView.imdbL.text = "imdb: \(movie.imdbRating)"
         moveiDetaiLView.yearL.text = movie.year
-        updateImageView(for: movie)
     }
     
     func updateImageView(for movie: Movie) {
@@ -78,11 +81,17 @@ class MovieDetailViewController: UIViewController {
             case let .success(image):
                 DispatchQueue.main.async {
                     self.moveiDetaiLView.posterImage.image = image
+                    self.imageStore.setImage(image, forKey: movie.movieKey!)
                 }
             case let .failure(error):
                 print("Error downloading Image: \(error)")
             }
         }
+    }
+    
+    func updateImageViewfromDisk(for movie: Movie) {
+        let image = self.imageStore.image(forKey: movie.movieKey!)
+        self.moveiDetaiLView.posterImage.image = image
     }
     
     // MARK: - IBActions
