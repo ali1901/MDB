@@ -15,7 +15,7 @@ class Movie: Codable {
     let plot: String
     let imdbRating: String
     let posterUrl: URL?
-    let movieKey: String? = UUID().uuidString
+    
 //    init() {
 //        self.title = ""
 //        self.year = ""
@@ -23,7 +23,7 @@ class Movie: Codable {
 //        self.plot = ""
 //        self.imdbRating = ""
 //        self.posterUrl = nil
-//        self.movieKey = UUID().uuidString
+//        self.movieKey = UUID().uuidString 
 //    }
     
     enum CodingKeys: String, CodingKey {
@@ -33,6 +33,5 @@ class Movie: Codable {
         case plot = "Plot"
         case imdbRating
         case posterUrl = "Poster"
-        case movieKey
     }
 }

@@ -133,7 +133,7 @@ class FirstViewController: UIViewController {
         for item in dictionarySelectedIndecPath {
             let t = loadedMovies[item.key.item].title
             print(t, "is about to be removed.")
-            self.imageStore.deleteImage(forKey: loadedMovies[item.key.item].movieKey!)
+            self.imageStore.deleteImage(forKey: loadedMovies[item.key.item].title)
             self.store.deleteMovie(for: t, index: item.key.item)
             loadedMovies.remove(at: item.key.item)
         }
@@ -154,28 +154,12 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CVCell", for: indexPath) as! CollectionViewCell
-//        store.fetchImage(for: loadedMovies[indexPath.item], with: { (imageResult) in
-//            switch imageResult {
-//            case let .success(image):
-//                OperationQueue.main.addOperation {
-//                    cell.imageView.image = image
-//                    cell.activityIndicator.stopAnimating()
-//                }
-//            case let .failure(error):
-//                OperationQueue.main.addOperation {
-//                    cell.imageView.image = UIImage.add
-//                    cell.activityIndicator.stopAnimating()
-//                }
-//                print("Error downloading image: \(error)")
-//            }
-//        })
-        let key = loadedMovies[indexPath.item].movieKey!
-        print("/*//*/*/*/*/**/*/**/*/*/*/*/*/*/: \(loadedMovies[indexPath.item].title),\(key)")
-        if let mage = self.imageStore.image(forKey: key) {
-            print("GOT TEH IMAGE")
-            cell.imageView.image = mage
-        } else {
-            print("THERE IS NO IMAGE")
+
+        let key = loadedMovies[indexPath.item].title
+        cell.imageView.image = imageStore.image(forKey: key)
+        if cell.imageView.image != nil {
+            cell.activityIndicator.stopAnimating()
+            cell.activityIndicator.isHidden = true
         }
         cell.titleLabel.text = loadedMovies[indexPath.item].title
         cell.isHighlighted = isEditing

@@ -80,9 +80,8 @@
                                                     </constraints>
                                                     <blurEffect style="regular"/>
                                                 </visualEffectView>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kf1-VW-olO">
-                                                    <rect key="frame" x="83" y="110" width="20" height="20"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="kf1-VW-olO">
+                                                    <rect key="frame" x="82.5" y="109.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <view hidden="YES" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N9G-SR-B6f">
                                                     <rect key="frame" x="0.0" y="0.0" width="185" height="239"/>
@@ -92,11 +91,13 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="FsE-Ae-CqJ" secondAttribute="trailing" id="01v-8h-GRm"/>
+                                                <constraint firstItem="kf1-VW-olO" firstAttribute="centerX" secondItem="Wtp-Vy-9mr" secondAttribute="centerX" id="5Ia-nM-Jtl"/>
                                                 <constraint firstItem="OKe-H2-aRk" firstAttribute="top" secondItem="Wtp-Vy-9mr" secondAttribute="top" id="LZM-9c-eRk"/>
                                                 <constraint firstItem="FsE-Ae-CqJ" firstAttribute="leading" secondItem="Wtp-Vy-9mr" secondAttribute="leading" id="NmA-vp-1Te"/>
                                                 <constraint firstAttribute="trailing" secondItem="OKe-H2-aRk" secondAttribute="trailing" id="a6F-sh-W67"/>
                                                 <constraint firstAttribute="bottom" secondItem="OKe-H2-aRk" secondAttribute="bottom" id="fUY-ye-IO2"/>
                                                 <constraint firstAttribute="bottom" secondItem="FsE-Ae-CqJ" secondAttribute="bottom" id="iLx-ls-dkH"/>
+                                                <constraint firstItem="kf1-VW-olO" firstAttribute="centerY" secondItem="Wtp-Vy-9mr" secondAttribute="centerY" id="wtI-8q-O2K"/>
                                                 <constraint firstItem="OKe-H2-aRk" firstAttribute="leading" secondItem="Wtp-Vy-9mr" secondAttribute="leading" id="wxG-6a-lY1"/>
                                             </constraints>
                                         </collectionViewCellContentView>

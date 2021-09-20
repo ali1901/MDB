@@ -17,7 +17,10 @@ class CollectionViewCell: UICollectionViewCell {
     
     override var isHighlighted: Bool {
       didSet {
-        highLightView.isHidden = !isHighlighted
+        UIView.animate(withDuration: 10.0) {
+            self.highLightView.isHidden = !self.isHighlighted
+        }
+        
       }
     }
     

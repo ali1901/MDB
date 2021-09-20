@@ -153,6 +153,7 @@ class MovieStore {
                 docDir.appendPathComponent("\(item).plist")
                 if let m = loadMovies(url: docDir) {
                     loadedMovies.append(m)
+                    print(docDir)
                 }
                 docDir = docDir.deletingLastPathComponent()
                 //                print ("this the address: \(docDir)")

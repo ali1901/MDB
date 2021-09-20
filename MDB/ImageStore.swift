@@ -32,12 +32,37 @@ class ImageStore {
         }
 
         let url = imageURL(forKey: key)
-        guard let imageFromDisk = UIImage(contentsOfFile: url.path) else {
+        var data = Data()
+        do {
+            data = try Data(contentsOf: url)
+        } catch {
+            print("Error Loading the image data: \(error)")
+        }
+        guard let imageFromDisk = UIImage(data: data) else {
             return nil
         }
         print("getting image from: \(url)")
         cache.setObject(imageFromDisk, forKey: key as NSString)
         return imageFromDisk
+//
+//
+//        var image : UIImage?
+//
+//        if let path = imageURL(forKey: key).path {
+//            if FileManager.default.fileExists(atPath: path) {
+//                if let newImage = UIImage(contentsOfFile: path)  {
+//                    image = newImage
+//                } else {
+//                    print("getImage() [Warning: file exists at \(path) :: Unable to create image]")
+//                }
+//
+//            } else {
+//                print("getImage() [Warning: file does not exist at \(path)]")
+//            }
+////        }
+//
+//        return image
+//        
     }
     
     func deleteImage(forKey key: String) {
@@ -54,7 +79,6 @@ class ImageStore {
     func imageURL(forKey key: String) -> URL {
         let documentDirectories = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let docDirectory = documentDirectories.first!
-        
-        return docDirectory.appendingPathComponent(key)
+        return docDirectory.appendingPathComponent("\(key).jpeg")
     }
 }

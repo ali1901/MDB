@@ -81,7 +81,7 @@ class MovieDetailViewController: UIViewController {
             case let .success(image):
                 DispatchQueue.main.async {
                     self.moveiDetaiLView.posterImage.image = image
-                    self.imageStore.setImage(image, forKey: movie.movieKey!)
+                    self.imageStore.setImage(image, forKey: movie.title)
                 }
             case let .failure(error):
                 print("Error downloading Image: \(error)")
@@ -90,7 +90,7 @@ class MovieDetailViewController: UIViewController {
     }
     
     func updateImageViewfromDisk(for movie: Movie) {
-        let image = self.imageStore.image(forKey: movie.movieKey!)
+        let image = self.imageStore.image(forKey: movie.title)
         self.moveiDetaiLView.posterImage.image = image
     }
     
