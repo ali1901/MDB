@@ -17,7 +17,7 @@ class DiskCaretaker {
         let directories = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let directory = directories.first!
         
-        return directory.appendingPathComponent("\(key)")
+        return directory.appendingPathComponent("\(key).json")
     }
     
     public func save<T: Encodable>(theObject object: T, withName name: String) throws {

@@ -12,6 +12,7 @@ class MovieDetailViewController: UIViewController {
     
     var store: MovieStore!
     var imageStore: ImageStore!
+    let mc = MovieCaretaker()
     
     var searchQuery = ""
 //    var savedMovieUrl: URL?
@@ -52,7 +53,9 @@ class MovieDetailViewController: UIViewController {
                     self.savedMovie = movie
                     self.setUpView(movie: movie)
                     self.updateImageView(for: movie)
-                    self.store.saveTheData(movie: movie)
+//                    self.store.saveTheData(movie: movie)
+                    try? self.mc.saveMovie(movie: movie)
+                    
                 }
                 
                 print("Successfully found \(movie.title) for search query /\(query)/.")
