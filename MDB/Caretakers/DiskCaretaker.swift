@@ -20,7 +20,7 @@ class DiskCaretaker {
         return directory.appendingPathComponent("\(key)")
     }
     
-    func save<T: Codable>(theObject object: T, withName name: String) throws {
+    public func save<T: Encodable>(theObject object: T, withName name: String) throws {
         let url = objURL(for: name)
         do {
             let data = try encoder.encode(object)
@@ -30,7 +30,7 @@ class DiskCaretaker {
         }
     }
     
-    func load<T: Codable>(toObject object: T.Type, withName name: String) throws -> T? {
+    public func load<T: Codable>(toObject object: T.Type, withName name: String) throws -> T? {
         let url = objURL(for: name)
         do {
             let data = try Data(contentsOf: url)
