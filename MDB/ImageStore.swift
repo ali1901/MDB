@@ -44,25 +44,7 @@ class ImageStore {
         print("getting image from: \(url)")
         cache.setObject(imageFromDisk, forKey: key as NSString)
         return imageFromDisk
-//
-//
-//        var image : UIImage?
-//
-//        if let path = imageURL(forKey: key).path {
-//            if FileManager.default.fileExists(atPath: path) {
-//                if let newImage = UIImage(contentsOfFile: path)  {
-//                    image = newImage
-//                } else {
-//                    print("getImage() [Warning: file exists at \(path) :: Unable to create image]")
-//                }
-//
-//            } else {
-//                print("getImage() [Warning: file does not exist at \(path)]")
-//            }
-////        }
-//
-//        return image
-//        
+     
     }
     
     func deleteImage(forKey key: String) {

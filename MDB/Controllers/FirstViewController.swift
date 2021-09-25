@@ -16,6 +16,8 @@ class FirstViewController: UIViewController {
     var loadedMovies = [Movie]()
     var indxPthItm: Int? = nil
     
+    let mc = MovieCaretaker()
+    
     var dictionarySelectedIndecPath: [IndexPath: Bool] = [:]
     
     enum Mode {
@@ -69,16 +71,12 @@ class FirstViewController: UIViewController {
 
         firstView.deleteBtn.isHidden = true
         firstView.searchTxtField.clearButtonMode = .whileEditing
-        loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
-        for item in loadedMovies {
-            print("***********////////***********////////: "+item.title)
-        }
-        
+        loadedMovies = mc.loadMoviesAdresses(for: "MovieTitles")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
-        loadedMovies = store.loadMoviesAdresses(for: "MovieTitles")
+        loadedMovies = mc.loadMoviesAdresses(for: "MovieTitles")
         firstView.searchTxtField.text = ""
         searhQuery = ""
         firstView.collectionView.reloadData()

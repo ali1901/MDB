@@ -14,19 +14,12 @@ class MovieCaretaker {
     private var titles = [String]()
     private var favoriteTitles = [String]()
     
-    public func loadMovie(withTitle title: String) -> Movie? {
-        if let movie = try? dc.load(toObject: Movie.self, withName: title) {
-            return movie
-        } else {
-            return nil
-        }
-    }
+    // MARK: - Saving Data
     
     public func saveMovie(movie: Movie) throws {
         saveMovieTitles(movie: movie, with: "MovieTitles")
         try dc.save(theObject: movie, withName: movie.title)
     }
-    
     
     public func saveMovieTitles(movie: Movie, with key: String) {
         let userDefaults = UserDefaults.standard
@@ -62,4 +55,29 @@ class MovieCaretaker {
         return uniqueOrdered
     }
     
+    // MARK: - Loading Data
+    public func loadMoviesAdresses(for key: String) -> [Movie] {
+        var loadedMovies = [Movie]()
+        var titles = [String]()
+        
+        if let movieTitles = UserDefaults.standard.value(forKey: key) {
+            titles = movieTitles as! [String]
+            for item in titles {
+                print("these are availible: \(item)")
+                if let m = loadMovie(withTitle: item) {
+                    loadedMovies.append(m)
+                }
+
+            }
+        }
+        return loadedMovies
+    }
+    
+    public func loadMovie(withTitle title: String) -> Movie? {
+        if let movie = try? dc.load(toObject: Movie.self, withName: title) {
+            return movie
+        } else {
+            return nil
+        }
+    }
 }
