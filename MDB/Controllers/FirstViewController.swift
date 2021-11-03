@@ -31,7 +31,7 @@ class FirstViewController: UIViewController {
         case .view:
           for (key, value) in dictionarySelectedIndecPath {
             if value {
-                firstView.collectionView.deselectItem(at: key, animated: true) //collectionView.deselectItem(at: key, animated: true)
+                firstView.collectionView.deselectItem(at: key, animated: true) 
             }
           }
           

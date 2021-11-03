@@ -41,21 +41,4 @@ class DiskCaretaker {
         }
         
     }
-    
-//    public static func retrieve<T: Codable>(_ type: T.Type, from fileName: String) throws -> T {
-//        let url = objURL(fileName)
-//        return try retrieve(T.self, from: url)
-//    }
-//    // 2
-//    public static func retrieve<T: Codable>(_ type: T.Type, from url: URL) throws -> T {
-//        do {
-//            // 3
-//            let data = try Data(contentsOf: url)
-//            // 4
-//            return try decoder.decode(T.self, from: data)
-//        } catch (let error) {
-//            // 5
-//            print("Retrieve failed: URL: `\(url)`, Error: `\(error)`")
-//            throw error }
-//    }
 }
