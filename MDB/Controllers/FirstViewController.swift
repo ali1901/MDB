@@ -152,6 +152,8 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CVCell", for: indexPath) as! CollectionViewCell
+        
+        cell.layer.cornerRadius = 10.0
 
         let key = loadedMovies[indexPath.item].title
         cell.imageView.image = imageStore.image(forKey: key)

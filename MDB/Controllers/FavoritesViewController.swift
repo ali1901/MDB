@@ -20,11 +20,13 @@ class FavoritesViewController: UITableViewController {
     var store: MovieStore!
     var imageStore: ImageStore!
     var movies = [Movie]()
+    let mc = MovieCaretaker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        movies = store.loadMoviesAdresses(for: "Favorites")
+//        movies = store.loadMoviesAdresses(for: "Favorites")
+        movies = mc.loadMoviesAdresses(for: "Favorites") // loading through caretaker
 //        setEditing(true, animated: true)
         print("what's the status: \(isEditing)")
 //        tableView.rowHeight = UITableView.automaticDimension

@@ -54,7 +54,7 @@ class MovieDetailViewController: UIViewController {
                     self.setUpView(movie: movie)
                     self.updateImageView(for: movie)
 //                    self.store.saveTheData(movie: movie)
-                    try? self.mc.saveMovie(movie: movie)
+                    try? self.mc.saveMovie(movie: movie) //saving movie through caretaker
                     
                 }
                 
