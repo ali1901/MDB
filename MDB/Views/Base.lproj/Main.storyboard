@@ -172,7 +172,7 @@
             </objects>
             <point key="canvasLocation" x="1000.0000000000001" y="138.61607142857142"/>
         </scene>
-        <!--Favorites View Controller-->
+        <!--Favorites-->
         <scene sceneID="fTp-eX-Yzn">
             <objects>
                 <tableViewController id="qIz-27-N2Q" customClass="FavoritesViewController" customModule="MDB" customModuleProvider="target" sceneMemberID="viewController">
@@ -234,7 +234,7 @@
                             <outlet property="delegate" destination="qIz-27-N2Q" id="lN5-EU-9p9"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="uCw-H4-XA3">
+                    <navigationItem key="navigationItem" title="Favorites" id="uCw-H4-XA3">
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="lVh-TC-oF6">
                             <connections>
                                 <action selector="editTapped:" destination="qIz-27-N2Q" id="tDa-e0-N0X"/>

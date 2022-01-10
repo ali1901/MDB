@@ -24,7 +24,7 @@ class FavoritesViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
 //        movies = store.loadMoviesAdresses(for: "Favorites")
         movies = mc.loadMoviesAdresses(for: "Favorites") // loading through caretaker
 //        setEditing(true, animated: true)
