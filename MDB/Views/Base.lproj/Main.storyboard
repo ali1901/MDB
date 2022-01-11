@@ -241,6 +241,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="JTD-mq-NUf" kind="show" identifier="rowSegue" id="dz3-72-p8s"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2B3-l5-fjX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -358,7 +361,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="kxD-Sg-3OD"/>
+        <segue reference="dz3-72-p8s"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="trash" catalog="system" width="121" height="128"/>

@@ -101,7 +101,7 @@ class MovieDetailViewController: UIViewController {
     @IBAction func addToFavorites(_ sender: UIBarButtonItem) {
         if let movie = savedMovie {
             print ("2-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/ \(movie.title)")
-            store.saveMovieTitles(movie: movie, with: "Favorites")
+            mc.saveMovieTitles(movie: movie, with: "Favorites")
         }
     }
 }

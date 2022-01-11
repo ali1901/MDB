@@ -15,6 +15,7 @@ class FavoritesViewController: UITableViewController {
     var imageStore: ImageStore!
     var movies = [Movie]()
     let mc = MovieCaretaker()
+    var index: Int? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,21 @@ class FavoritesViewController: UITableViewController {
 
         print("what's the status: \(isEditing)")
         tableView.rowHeight = 100
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "rowSegue":
+            if let nvc = segue.destination as? MovieDetailViewController {
+                nvc.store = self.store
+                nvc.imageStore = self.imageStore
+                if let inx = index {
+                    nvc.savedMovie = movies[inx]
+                }
+            }
+        default:
+           print("Im on non")
+        }
     }
 
     // MARK: - @IBActions
@@ -70,5 +86,9 @@ extension FavoritesViewController {
         }
     }
     
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        index = indexPath.row
+        let item = movies[indexPath.row]
+        performSegue(withIdentifier: "rowSegue", sender: item)
+    }
 }
